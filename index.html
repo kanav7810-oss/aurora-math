@@ -746,18 +746,32 @@ a{color:inherit;text-decoration:none}
 /* MOBILE */
 @media(max-width:1024px){.subj-card{width:400px;min-width:400px}.scw{width:160px;height:160px;min-width:160px}}
 @media(max-width:768px){
-  body{cursor:auto}.cd,.cr{display:none}
+  body{cursor:auto;-webkit-tap-highlight-color:transparent}.cd,.cr{display:none}
   .nav{width:calc(100% - 24px);padding:0 20px;top:8px;border-radius:12px}.nk{display:none}
-  .hero{min-height:600px}
+  .hero{min-height:100vh;min-height:-webkit-fill-available;min-height:svh}
   .carousel-section{height:40vh;min-height:250px}
-  .sg{flex-direction:column;gap:32px}.si2:not(:last-child)::after{display:none}
-  .stg{grid-template-columns:1fr;max-width:500px}
-  .subj-card{width:100%;min-width:unset;flex-direction:column;text-align:center}.scw{width:100%;height:180px;min-width:unset}
-  .tg{grid-template-columns:1fr;max-width:500px}
+  .stats{padding:40px 20px}
+  .sg{flex-direction:column;gap:24px}.si2{padding:0 20px}.si2:not(:last-child)::after{display:none}
+  .hwi{padding:80px 20px}.hwi .shd{margin-bottom:48px}
+  .stg{grid-template-columns:1fr;max-width:500px;margin:0 auto}
+  .stc{padding:36px 24px}
+  .subj-h{padding:80px 20px 40px}
+  .subj-card{width:100%;min-width:unset;flex-direction:column;text-align:center;padding:28px 20px}.scw{width:100%;height:180px;min-width:unset}
+  .test{padding:80px 20px}.test .shd{margin-bottom:48px}
+  .tg{grid-template-columns:1fr;max-width:500px;margin:0 auto}
   .tc:nth-child(1),.tc:nth-child(2),.tc:nth-child(3){transform:translateY(40px);margin-top:0}
+  .abt{padding:80px 20px}
   .abi{grid-template-columns:1fr;gap:40px;text-align:center}.aob{width:220px;height:220px}.pb{justify-content:center}
+  .book{padding:80px 20px}
+  .bf{padding:32px 20px}
   .bf-row{grid-template-columns:1fr}
+  .bf-radio label{cursor:auto}
+  .bf-submit{cursor:auto}
+  .cta{padding:80px 20px}
   .fi{flex-direction:column;gap:20px;text-align:center}
+  .fsl{cursor:auto}
+  .nc{cursor:auto}
+  .hb,.cta-b,.pbi{cursor:auto}
 }
 </style>
 </head>
@@ -888,11 +902,10 @@ a{color:inherit;text-decoration:none}
   </div>
   <div class="bf-wrap">
     <div class="bf" id="bfForm">
-      <form action="https://formsubmit.co/kanav7810@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Aurora Math - New Booking">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_next" value="">
+      <form action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="3019d034-4ca7-43c7-b4d9-2ec22dccb844">
+        <input type="hidden" name="subject" value="Aurora Math - New Booking">
+        <input type="hidden" name="from_name" value="Aurora Math Website">
         <div class="bf-row">
           <div><label>Parent Name</label><input type="text" name="parent_name" required placeholder="Full name"></div>
           <div><label>Student Name</label><input type="text" name="student_name" required placeholder="Full name"></div>
