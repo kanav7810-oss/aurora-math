@@ -1493,7 +1493,7 @@ animateAll();
     }
     if(dir==='h'){
       e.preventDefault();
-      var offset=parseFloat(track.dataset.offset||0)-dx*.5;
+      var offset=parseFloat(track.dataset.offset||0)-dx*1.5;
       offset=Math.min(0,Math.max(-(track.scrollWidth-wrap.clientWidth+80),offset));
       track.style.transform='translateX('+offset+'px)';
       track.dataset.offset=offset;
