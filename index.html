@@ -982,6 +982,13 @@ function webGLAvailable(){
   try{var c=document.createElement('canvas');return!!(c.getContext('webgl')||c.getContext('experimental-webgl'));}catch(e){return false;}
 }
 var hasWebGL=webGLAvailable();
+var hasGSAP=typeof gsap!=='undefined';
+var hasST=typeof ScrollTrigger!=='undefined';
+if(!hasGSAP||!hasST){
+  var els=document.querySelectorAll('.tc,.atx,.stag,.sn,.si2,.stc,.bf,.cta-co,.aob,.il,.nav,.hs,.hb,.si');
+  for(var i=0;i<els.length;i++){els[i].style.opacity='1';els[i].style.transform='none';}
+  var io=document.getElementById('io');if(io)io.style.display='none';
+}
 
 var formDirty=false;
 var bfForm=document.getElementById('bfForm');
@@ -1032,7 +1039,7 @@ document.addEventListener('click',function(e){
 // ==========================================
 // CURSOR
 // ==========================================
-if(!isMobile){
+if(hasGSAP && !isMobile){
   var cd=document.getElementById('cd'),cr=document.getElementById('cr');
   var dx=gsap.quickTo(cd,'left',{duration:.1,ease:'power3'});
   var dy=gsap.quickTo(cd,'top',{duration:.1,ease:'power3'});
@@ -1049,7 +1056,7 @@ if(!isMobile){
 // ==========================================
 // SCROLL BAR
 // ==========================================
-gsap.to('#sb',{width:'100%',ease:'none',scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:.3}});
+if(hasGSAP && hasST){gsap.to('#sb',{width:'100%',ease:'none',scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:.3}});}
 
 // ==========================================
 // THREE.JS SCENE MANAGER
@@ -1148,7 +1155,7 @@ createScene('hc', function(container) {
 });
 
 // Hero parallax
-gsap.to('.hco',{y:-100,opacity:0,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:.5}});
+if(hasGSAP && hasST){gsap.to('.hco',{y:-100,opacity:0,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:.5}});}
 
 // ==========================================
 // CAROUSEL 3D SCENE
@@ -1214,7 +1221,7 @@ createScene('cc', function(container) {
   };
 });
 
-gsap.from('.carousel-text h2',{opacity:0,y:30,duration:1.2,ease:'power3.out',scrollTrigger:{trigger:'.carousel-section',start:'top 70%',once:true}});
+if(hasGSAP && hasST){gsap.from('.carousel-text h2',{opacity:0,y:30,duration:1.2,ease:'power3.out',scrollTrigger:{trigger:'.carousel-section',start:'top 70%',once:true}});}
 
 // ==========================================
 // SUBJECT MINI SCENES
@@ -1547,8 +1554,11 @@ function playIntro(){
 }
 
 // ==========================================
-// GSAP STATS
+// GSAP ANIMATIONS (guarded)
 // ==========================================
+if(hasGSAP && hasST){
+
+// GSAP STATS
 var sns=document.querySelectorAll('.sn');
 for(var si=0;si<sns.length;si++){(function(el){
   var t=parseInt(el.getAttribute('data-target'));var s=el.getAttribute('data-suffix')||'';
@@ -1557,9 +1567,7 @@ for(var si=0;si<sns.length;si++){(function(el){
   }});
 })(sns[si])}
 
-// ==========================================
 // GSAP SPLIT HEADINGS
-// ==========================================
 var shs=document.querySelectorAll('[data-split]');
 for(var si2=0;si2<shs.length;si2++){(function(h){
   var txt=h.textContent;h.innerHTML='';
@@ -1572,43 +1580,29 @@ for(var si2=0;si2<shs.length;si2++){(function(h){
   gsap.from(h.querySelectorAll('.ch'),{y:80,opacity:0,duration:.8,stagger:.03,ease:'power3.out',scrollTrigger:{trigger:h,start:'top 80%',once:true}});
 })(shs[si2])}
 
-// ==========================================
 // GSAP SECTION TAGS
-// ==========================================
 var tags=document.querySelectorAll('.stag');
 for(var ti=0;ti<tags.length;ti++){gsap.to(tags[ti],{opacity:1,duration:.6,ease:'power2.out',scrollTrigger:{trigger:tags[ti],start:'top 85%',once:true}})}
 
-// ==========================================
 // GSAP STEP CARDS
-// ==========================================
 gsap.fromTo('.stc',{opacity:0,y:60},{opacity:1,y:0,duration:.8,stagger:.15,ease:'power3.out',scrollTrigger:{trigger:'.stg',start:'top 75%',once:true}});
 
-// ==========================================
 // GSAP TESTIMONIALS
-// ==========================================
 gsap.to('.tc:nth-child(1)',{opacity:1,x:0,duration:.8,ease:'power3.out',scrollTrigger:{trigger:'.tg',start:'top 75%',once:true}});
 gsap.to('.tc:nth-child(2)',{opacity:1,y:0,duration:.8,delay:.15,ease:'power3.out',scrollTrigger:{trigger:'.tg',start:'top 75%',once:true}});
 gsap.to('.tc:nth-child(3)',{opacity:1,x:0,duration:.8,delay:.3,ease:'power3.out',scrollTrigger:{trigger:'.tg',start:'top 75%',once:true}});
 
-// ==========================================
 // GSAP ABOUT
-// ==========================================
 gsap.to('#aob',{opacity:1,scale:1,duration:1.2,ease:'power2.out',scrollTrigger:{trigger:'.abt',start:'top 60%',once:true}});
 gsap.to('#atx',{opacity:1,x:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:'.abt',start:'top 60%',once:true}});
 
-// ==========================================
 // GSAP BOOKING
-// ==========================================
 gsap.from('.bf',{opacity:0,y:40,duration:.8,ease:'power3.out',scrollTrigger:{trigger:'.bf-wrap',start:'top 75%',once:true}});
 
-// ==========================================
 // GSAP CONTACT
-// ==========================================
 gsap.from('.cta-co',{opacity:0,y:60,duration:1,ease:'power3.out',scrollTrigger:{trigger:'.cta',start:'top 70%',once:true}});
 
-// ==========================================
 // MAGNETIC CTA
-// ==========================================
 if(!isMobile){
   var ctab=document.getElementById('ctaB');
   if(ctab){
@@ -1619,6 +1613,8 @@ if(!isMobile){
     ctab.addEventListener('mouseleave',function(){gsap.to(ctab,{x:0,y:0,duration:.4,ease:'elastic.out(1,.5)'})});
   }
 }
+
+}// end hasGSAP && hasST
 
 // ==========================================
 // FORM HANDLING
@@ -1797,7 +1793,7 @@ if(!isMobile){
 // ==========================================
 // INIT
 // ==========================================
-ScrollTrigger.refresh();
+if(hasST){ScrollTrigger.refresh();}
 setTimeout(safePlayIntro,200);
 
 })();
