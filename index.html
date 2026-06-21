@@ -596,7 +596,7 @@ a{color:inherit;text-decoration:none}
 
 /* HERO */
 .hero{position:relative;width:100%;height:100vh;min-height:700px;display:flex;align-items:center;justify-content:center;background:var(--bg);overflow:hidden}
-.hc{position:absolute;inset:0;z-index:1}
+.hc{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse at 50% 40%,rgba(79,195,247,.06) 0%,transparent 60%)}
 .hco{position:relative;z-index:2;text-align:center}
 .ht{font-family:var(--fd);line-height:.9;margin-bottom:16px}
 .ht .ln{display:block;overflow:hidden}
@@ -612,7 +612,7 @@ a{color:inherit;text-decoration:none}
 @keyframes bd{0%,20%,50%,80%,100%{transform:translateY(0)}40%{transform:translateY(10px)}60%{transform:translateY(5px)}}
 
 /* 3D CAROUSEL SCENE */
-.carousel-section{position:relative;width:100%;height:60vh;min-height:400px;overflow:hidden;background:var(--bg2);border-top:1px solid rgba(79,195,247,.06);border-bottom:1px solid rgba(79,195,247,.06)}
+.carousel-section{position:relative;width:100%;height:60vh;min-height:400px;overflow:hidden;background:linear-gradient(180deg,var(--bg2) 0%,rgba(79,195,247,.03) 50%,var(--bg2) 100%);border-top:1px solid rgba(79,195,247,.06);border-bottom:1px solid rgba(79,195,247,.06)}
 .cc{position:absolute;inset:0;z-index:1}
 .carousel-overlay{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;height:100%;pointer-events:none}
 .carousel-text{text-align:center}
@@ -657,7 +657,7 @@ a{color:inherit;text-decoration:none}
 .subj-track{display:flex;gap:24px;padding:0 40px;width:max-content;will-change:transform}
 .subj-card{width:500px;min-width:500px;background:var(--glass);backdrop-filter:var(--gblur);-webkit-backdrop-filter:var(--gblur);border:1px solid var(--gborder);box-shadow:0 8px 32px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06);border-radius:16px;padding:40px;display:flex;gap:32px;align-items:center;transition:transform .4s cubic-bezier(.25,.46,.45,.94),border-color .4s,box-shadow .4s;cursor:none}
 .subj-card:hover{transform:scale(1.03);border-color:rgba(79,195,247,.3);box-shadow:0 0 40px rgba(79,195,247,.08),0 8px 32px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06)}
-.scw{width:200px;height:200px;min-width:200px;border-radius:12px;overflow:hidden;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.04)}
+.scw{width:200px;height:200px;min-width:200px;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,rgba(79,195,247,.08) 0%,rgba(0,0,0,.4) 100%);border:1px solid rgba(255,255,255,.04)}
 .scw canvas{width:100%!important;height:100%!important;display:block}
 .sci{flex:1}
 .scn{font-family:var(--fd);font-size:1.8rem;font-weight:500;margin-bottom:12px}
@@ -701,7 +701,7 @@ a{color:inherit;text-decoration:none}
 
 /* BOOKING FORM */
 .book{position:relative;padding:120px 40px;background:var(--bg3);overflow:hidden}
-.book-canvas{position:absolute;inset:0;z-index:1}
+.book-canvas{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse at 50% 30%,rgba(79,195,247,.04) 0%,transparent 60%)}
 .book .shd{text-align:center;margin-bottom:60px;position:relative;z-index:2}
 .book .sd{margin:0 auto}
 .bf-wrap{position:relative;z-index:2;max-width:560px;margin:0 auto}
@@ -732,7 +732,7 @@ a{color:inherit;text-decoration:none}
 
 /* CONTACT */
 .cta{position:relative;padding:160px 40px;background:var(--bg);overflow:hidden;text-align:center}
-.cta-c{position:absolute;inset:0;z-index:1}
+.cta-c{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse at 50% 50%,rgba(79,195,247,.04) 0%,transparent 60%)}
 .cta-co{position:relative;z-index:2}
 .cta .sh{font-size:clamp(2.5rem,6vw,5rem);margin-bottom:20px}
 .cta .sd{margin:0 auto 40px;text-align:center}
@@ -970,6 +970,19 @@ a{color:inherit;text-decoration:none}
 if('scrollRestoration' in history){history.scrollRestoration='manual'}
 window.scrollTo(0,0);
 
+var introPlayed=false;
+function safePlayIntro(){
+  if(introPlayed)return;
+  introPlayed=true;
+  try{playIntro();}catch(e){var o=document.getElementById('io');if(o)o.style.display='none';}
+}
+setTimeout(safePlayIntro,4000);
+
+function webGLAvailable(){
+  try{var c=document.createElement('canvas');return!!(c.getContext('webgl')||c.getContext('experimental-webgl'));}catch(e){return false;}
+}
+var hasWebGL=webGLAvailable();
+
 var formDirty=false;
 var bfForm=document.getElementById('bfForm');
 if(bfForm){
@@ -979,7 +992,7 @@ if(bfForm){
 window.addEventListener('beforeunload',function(e){
   if(formDirty){e.preventDefault();e.returnValue=''}
 });
-bfForm.querySelector('form').addEventListener('submit',function(){formDirty=false});
+if(bfForm){bfForm.querySelector('form').addEventListener('submit',function(){formDirty=false});}
 
 var isMobile = window.innerWidth < 768;
 var mouseX = 0, mouseY = 0;
@@ -988,7 +1001,9 @@ var raf = window.requestAnimationFrame || function(cb){return setTimeout(cb,16)}
 // ==========================================
 // LENIS
 // ==========================================
-var lenis = new Lenis({
+var lenis;
+try{
+lenis = new Lenis({
   duration:1.2,
   easing:function(t){return Math.min(1,1.001-Math.pow(2,-10*t))},
   orientation:'vertical',
@@ -1000,6 +1015,7 @@ var lenis = new Lenis({
 lenis.on('scroll',function(){ScrollTrigger.update()});
 gsap.ticker.add(function(t){lenis.raf(t*1000)});
 gsap.ticker.lagSmoothing(0);
+}catch(e){console.warn('Lenis init failed:',e);}
 
 document.addEventListener('click',function(e){
   var a=e.target.closest('a[href^="#"]');
@@ -1007,7 +1023,8 @@ document.addEventListener('click',function(e){
     var target=document.querySelector(a.getAttribute('href'));
     if(target){
       e.preventDefault();
-      lenis.scrollTo(target,{offset:-40,duration:1.8,easing:function(t){return t<.5?4*t*t*t:(t-1)*(2*t-2)*(2*t-2)+1}});
+      if(lenis){lenis.scrollTo(target,{offset:-40,duration:1.8,easing:function(t){return t<.5?4*t*t*t:(t-1)*(2*t-2)*(2*t-2)+1}});}
+      else{target.scrollIntoView({behavior:'smooth'});}
     }
   }
 });
@@ -1040,6 +1057,7 @@ gsap.to('#sb',{width:'100%',ease:'none',scrollTrigger:{trigger:document.body,sta
 var scenes = [];
 
 function createScene(containerId, initFn) {
+  if (!hasWebGL) return null;
   var container = document.getElementById(containerId);
   if (!container) return null;
   try {
@@ -1203,6 +1221,7 @@ gsap.from('.carousel-text h2',{opacity:0,y:30,duration:1.2,ease:'power3.out',scr
 // ==========================================
 var subjScenes=[];
 (function(){
+  if(!hasWebGL)return;
   var cards=document.querySelectorAll('.subj-card');
   for(var c=0;c<cards.length;c++){
     var card=cards[c];
@@ -1779,7 +1798,7 @@ if(!isMobile){
 // INIT
 // ==========================================
 ScrollTrigger.refresh();
-setTimeout(playIntro,200);
+setTimeout(safePlayIntro,200);
 
 })();
 </script>
