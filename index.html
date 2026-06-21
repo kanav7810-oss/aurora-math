@@ -551,10 +551,6 @@ WpK3aLHD0ZK8RYsdjpbkLVrscLQkb9Fih6MleYsWOxwtyVu02OFoSd6ixQ5HS/P/wAAAP//
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&family=Space+Mono:wght@400;700&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -963,9 +959,14 @@ a{color:inherit;text-decoration:none}
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" onerror="console.warn('Three.js CDN failed')"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" onerror="console.warn('GSAP CDN failed')"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" onerror="console.warn('ScrollTrigger CDN failed')"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" onerror="console.warn('Lenis CDN failed')"></script>
 <script>
 (function(){
 'use strict';
+try{
 
 if('scrollRestoration' in history){history.scrollRestoration='manual'}
 window.scrollTo(0,0);
@@ -978,13 +979,12 @@ function safePlayIntro(){
 }
 setTimeout(safePlayIntro,4000);
 
-function webGLAvailable(){
-  try{var c=document.createElement('canvas');return!!(c.getContext('webgl')||c.getContext('experimental-webgl'));}catch(e){return false;}
-}
-var hasWebGL=webGLAvailable();
-var hasGSAP=typeof gsap!=='undefined';
-var hasST=typeof ScrollTrigger!=='undefined';
-if(!hasGSAP||!hasST){
+var isMobile = window.innerWidth < 768;
+var isAndroid = /Android/i.test(navigator.userAgent);
+var hasWebGL = !isAndroid && !isMobile;
+var hasGSAP = typeof gsap !== 'undefined';
+var hasST = typeof ScrollTrigger !== 'undefined';
+if(!hasGSAP||!hasST||!hasWebGL){
   var els=document.querySelectorAll('.tc,.atx,.stag,.sn,.si2,.stc,.bf,.cta-co,.aob,.il,.nav,.hs,.hb,.si');
   for(var i=0;i<els.length;i++){els[i].style.opacity='1';els[i].style.transform='none';}
   var io=document.getElementById('io');if(io)io.style.display='none';
@@ -1001,7 +1001,6 @@ window.addEventListener('beforeunload',function(e){
 });
 if(bfForm){bfForm.querySelector('form').addEventListener('submit',function(){formDirty=false});}
 
-var isMobile = window.innerWidth < 768;
 var mouseX = 0, mouseY = 0;
 var raf = window.requestAnimationFrame || function(cb){return setTimeout(cb,16)};
 
@@ -1796,6 +1795,7 @@ if(!isMobile){
 if(hasST){ScrollTrigger.refresh();}
 setTimeout(safePlayIntro,200);
 
+}catch(e){console.warn('Script error:',e);var o=document.getElementById('io');if(o)o.style.display='none';}
 })();
 </script>
 </body>
